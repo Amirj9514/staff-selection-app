@@ -1,0 +1,30 @@
+@import "./color";
+
+.mainBoadyContainer {
+  max-width: 1180px;
+}
+
+/* Works on Firefox */
+* {
+  scrollbar-width: thin;
+
+  scrollbar-color: rgb(200, 200, 200) rgb(249, 245, 245);
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgb(249, 245, 245);
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgb(200, 200, 200);
+  border-radius: 20px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgb(200, 200, 200);
+}

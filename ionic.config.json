@@ -1,5 +1,7 @@
 {
   "name": "Staff Selection App",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }

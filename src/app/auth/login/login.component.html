@@ -1,0 +1,144 @@
+<div class="min-h-screen flex justify-content-center">
+  <div class="mainBoadyContainer relative w-full">
+    <div (click)="goBack()"
+      class="flex"
+      *ngIf="formStep > 1"
+      style="position: absolute; top: 20px; left: 10px"
+    >
+      <div class="backIcon">
+        <svg
+          stroke="currentColor"
+          fill="currentColor"
+          stroke-width="0"
+          viewBox="0 0 512 512"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="48"
+            d="M328 112 184 256l144 144"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <div class="header">
+      <div
+        class="flex justify-content-center align-items-center h-full text-2xl font-semibold py-3 ml-4"
+      >
+        <img src="../../../assets/icon/logo.png" height="100%" />
+      </div>
+    </div>
+
+    <form
+      [formGroup]="loginForm"
+      class="mainBody flex justify-content-center mt-6"
+    >
+      <div class="flex flex-column gap-2 w-11" *ngIf="formStep === 1">
+        <label class="text-center mb-3 text-2xl font-bold" for="businessID"
+          >Enter Business Id</label
+        >
+        <input
+          pInputText
+          readonly
+          id="businessID"
+          class="text-center customInputFeild"
+          formControlName="businessId"
+        />
+
+        <small
+          class="text-red-500"
+          *ngIf="
+            (loginForm.controls['businessId'].touched || loginFormSubmit) &&
+            loginForm.controls['businessId'].errors
+          "
+          >Business Id is required</small
+        >
+      </div>
+
+      <div class="flex flex-column gap-2 w-11" *ngIf="formStep === 2">
+        <label class="text-center mb-3 text-2xl font-bold" for="userName"
+          >Enter User ID</label
+        >
+        <input
+          pInputText
+          readonly
+          id="userName"
+          class="text-center customInputFeild"
+          formControlName="userName"
+        />
+        <small
+          class="text-red-500"
+          *ngIf="
+            (loginForm.controls['userName'].touched || loginFormSubmit) &&
+            loginForm.controls['userName'].errors
+          "
+          >Username is required</small
+        >
+      </div>
+
+      <div class="flex flex-column gap-2 w-11" *ngIf="formStep === 3">
+        <label class="text-center mb-3 text-2xl font-bold" for="password"
+          >Enter Password</label
+        >
+        <input
+          pInputText
+          readonly
+          id="password"
+          class="text-center customInputFeild"
+          formControlName="password"
+        />
+        <small
+          class="text-red-500"
+          *ngIf="
+            (loginForm.controls['password'].touched || loginFormSubmit) &&
+            loginForm.controls['password'].errors
+          "
+          >Password is required</small
+        >
+      </div>
+    </form>
+
+    <div class="footer grid m-0 absolute w-full">
+      <div class="col-4" *ngFor="let num of numList">
+        <div class="btn" (click)="enterVal(num)">{{ num }}</div>
+      </div>
+
+      <div class="col-4">
+        <div class="removeBtn" (click)="remove()">
+          <div class="icon">
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 576 512"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M576 128c0-35.3-28.7-64-64-64H205.3c-17 0-33.3 6.7-45.3 18.7L9.4 233.4c-6 6-9.4 14.1-9.4 22.6s3.4 16.6 9.4 22.6L160 429.3c12 12 28.3 18.7 45.3 18.7H512c35.3 0 64-28.7 64-64V128zM271 175c9.4-9.4 24.6-9.4 33.9 0l47 47 47-47c9.4-9.4 24.6-9.4 33.9 0s9.4 24.6 0 33.9l-47 47 47 47c9.4 9.4 9.4 24.6 0 33.9s-24.6 9.4-33.9 0l-47-47-47 47c-9.4 9.4-24.6 9.4-33.9 0s-9.4-24.6 0-33.9l47-47-47-47c-9.4-9.4-9.4-24.6 0-33.9z"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="btn" (click)="enterVal('0')">0</div>
+      </div>
+      <div class="col-4">
+        <div class="submitBtn primary-bg" (click)="onSubmit(loginForm)">
+          <span *ngIf="!loginLoader">
+            {{ formStep >= 3 ? "Submit" : "Next" }}
+          </span>
+          <span *ngIf="loginLoader">
+            <p-progressSpinner ariaLabel="loading" styleClass="w-3rem h-3rem" />
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

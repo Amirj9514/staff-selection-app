@@ -1,0 +1,85 @@
+.backIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  color: black;
+  font-size: 30px;
+  padding: 5px;
+}
+
+.header {
+  height: 80px;
+}
+
+.customInputFeild {
+  padding: 10px 10px;
+  font-size: 35px;
+  font-weight: 600;
+}
+
+.btn {
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: #ffffff;
+  color: black;
+  cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.submitBtn {
+  border-radius: 8px;
+  padding: 12px 10px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+.removeBtn {
+  border-radius: 8px;
+  padding: 1px;
+  text-align: center;
+  font-size: 58px;
+  font-weight: 600;
+  background-color: #ffffff;
+  color: red;
+  cursor: pointer;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+
+  .icon {
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.footer {
+  bottom: 100px;
+}
+
+@media (min-height: 1021px) {
+  .btn {
+    padding: 40px !important;
+    font-size: 40px !important;
+  }
+
+  .submitBtn {
+    padding: 30px !important;
+    font-size: 55px !important;
+  }
+  .removeBtn {
+    font-size: 100px !important;
+    padding: 14px !important;
+  }
+
+  .customInputFeild {
+    padding: 30px 10px;
+  }
+}

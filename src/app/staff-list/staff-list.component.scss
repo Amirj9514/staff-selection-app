@@ -1,0 +1,46 @@
+.backIcon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  color: black;
+  font-size: 30px;
+  padding: 5px;
+}
+
+.header {
+  height: 80px;
+}
+
+.filterDropdown {
+  border: 1px solid blue;
+  border-radius: 25px;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  cursor: pointer;
+
+  .downIcon {
+    color: gray;
+  }
+}
+
+.safttCard {
+  border: 2px solid blue;
+  border-radius: 10px;
+  overflow: hidden;
+  .cardHeader {
+    height: 200px;
+    width: 100%;
+    img {
+      object-fit: cover;
+    }
+  }
+  .cardBody {
+    padding: 10px 20px;
+    text-align: center;
+  }
+}
