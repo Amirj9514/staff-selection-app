@@ -9,6 +9,8 @@ import { MessageService } from 'primeng/api';
 import { SkeletonModule } from 'primeng/skeleton';
 import { HttpClientModule } from '@angular/common/http';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { DropdownModule } from 'primeng/dropdown';
+import { ButtonModule } from 'primeng/button';
 
 @NgModule({
   declarations: [ToastComponent],
@@ -21,6 +23,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     HttpClientModule,
     SkeletonModule,
     ProgressSpinnerModule,
+    DropdownModule,
+    ButtonModule,
     // -------------------------------------------
     // Not Shared Modules
   ],
@@ -33,6 +37,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     HttpClientModule,
     SkeletonModule,
     ProgressSpinnerModule,
+    DropdownModule,
+    ButtonModule,
   ],
   providers: [MessageService],
 })

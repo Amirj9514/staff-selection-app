@@ -4,6 +4,22 @@
   max-width: 1180px;
 }
 
+
+
+#staffFilters {
+
+  select {
+    background: transparent;
+    padding: 10px;
+    border-radius: 24px;
+    border-color: blue;
+  }
+}
+
+.outline {
+  outline: none;
+}
+
 /* Works on Firefox */
 * {
   scrollbar-width: thin;
