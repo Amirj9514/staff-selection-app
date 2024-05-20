@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 import { loginApi } from 'src/app/shared/interfaces/loginApi.interface';
 import { SharedService } from 'src/app/shared/services/shared.service';
 import { ShowToastService } from 'src/app/shared/services/show-toast.service';
@@ -11,6 +12,7 @@ import { ShowToastService } from 'src/app/shared/services/show-toast.service';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
+  localStorageData: any;
   formStep: number = 1;
   loginFormSubmit: boolean = false;
   loginLoader: boolean = false;
@@ -29,7 +31,24 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.getLocalStorageData();
+  }
+
+  getLocalStorageData() {
+    this.sharedS
+      .getData()
+      .pipe(take(1))
+      .subscribe((data: any) => {
+        this.localStorageData = data;
+        let user = this.localStorageData?.user;
+
+        // redirect user if user id exist in localStorage Data
+        if (user && user.id && user.id.length > 0) {
+          this.router.navigateByUrl('/staffList');
+        }
+      });
+  }
 
   goBack() {
     if (this.formStep > 1) {

@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
+import { RippleModule } from 'primeng/ripple';
 
 @NgModule({
   declarations: [ToastComponent],
@@ -25,6 +26,7 @@ import { ButtonModule } from 'primeng/button';
     ProgressSpinnerModule,
     DropdownModule,
     ButtonModule,
+    RippleModule,
     // -------------------------------------------
     // Not Shared Modules
   ],
@@ -39,6 +41,7 @@ import { ButtonModule } from 'primeng/button';
     ProgressSpinnerModule,
     DropdownModule,
     ButtonModule,
+    RippleModule,
   ],
   providers: [MessageService],
 })

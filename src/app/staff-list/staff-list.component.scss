@@ -12,7 +12,7 @@
 }
 
 .header {
-  height: 80px;
+  height: 160px;
 }
 
 .filterDropdown {
@@ -32,13 +32,16 @@
   border: 2px solid blue;
   border-radius: 10px;
   overflow: hidden;
+
   .cardHeader {
     height: 200px;
     width: 100%;
+
     img {
       object-fit: cover;
     }
   }
+
   .cardBody {
     padding: 10px 20px;
     text-align: center;

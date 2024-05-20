@@ -12,7 +12,7 @@
 }
 
 .header {
-  height: 80px;
+  height: 100px;
 }
 
 .customInputFeild {
@@ -25,8 +25,8 @@
   border-radius: 8px;
   padding: 20px;
   text-align: center;
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 30px;
+  font-weight: 900;
   background-color: #ffffff;
   color: black;
   cursor: pointer;
@@ -35,17 +35,19 @@
 
 .submitBtn {
   border-radius: 8px;
-  padding: 12px 10px;
+  padding: 20px 10px;
   text-align: center;
+  text-wrap: nowrap;
   font-size: 30px;
   font-weight: 600;
   color: #ffffff;
   cursor: pointer;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
+
 .removeBtn {
   border-radius: 8px;
-  padding: 1px;
+  padding: 9px;
   text-align: center;
   font-size: 58px;
   font-weight: 600;
@@ -61,19 +63,21 @@
 }
 
 .footer {
-  bottom: 100px;
+  bottom: 10px;
 }
 
 @media (min-height: 1021px) {
   .btn {
-    padding: 40px !important;
-    font-size: 40px !important;
+    padding: 34px !important;
+    font-size: 50px !important;
+    font-weight: 900;
   }
 
   .submitBtn {
     padding: 30px !important;
     font-size: 55px !important;
   }
+
   .removeBtn {
     font-size: 100px !important;
     padding: 14px !important;

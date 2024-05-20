@@ -15,12 +15,18 @@ import {
 export class StaffListComponent implements OnInit {
   stafList: any[] = [];
   filterStafList: any[] = [];
+  localStorageData: any;
 
   filterList: StaffFilter[] = [];
   staffListLoader: boolean = false;
 
   filterForm!: FormGroup;
   formControlList: string[] = [];
+  showFilter: boolean = false;
+  selectedStaff: { data: any; show: boolean } = {
+    data: null,
+    show: false,
+  };
   constructor(
     private sharedS: SharedService,
     private showToastS: ShowToastService
@@ -29,15 +35,22 @@ export class StaffListComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getLocalStorageData();
     this.getStafList();
   }
 
+  getLocalStorageData() {
+    this.sharedS.getData().subscribe((data: any) => {
+      this.localStorageData = data;
+    });
+  }
   getStafList() {
     let apiParam: { business_id: string } = {
       business_id: '76',
     };
 
     this.stafList = Array.from({ length: 12 }).map((_, i) => `Item #${i}`);
+    this.filterStafList = this.stafList;
     this.staffListLoader = true;
     this.sharedS
       .sendPostRequest('Staff_selection/getStaffList', apiParam)
@@ -53,6 +66,7 @@ export class StaffListComponent implements OnInit {
             }
           } else {
             this.stafList = [];
+            this.filterStafList = [];
             this.showToastS.setToast({
               show: true,
               message: res.message,
@@ -61,6 +75,7 @@ export class StaffListComponent implements OnInit {
         },
         error: (err: any) => {
           this.stafList = [];
+          this.filterStafList = [];
           this.staffListLoader = false;
           this.showToastS.setToast({
             show: true,
@@ -121,5 +136,12 @@ export class StaffListComponent implements OnInit {
   resetFilter() {
     this.filterStafList = this.stafList;
     this.filterForm.reset();
+  }
+
+  hideShowStaffDetail(data: any, show: boolean) {
+    this.selectedStaff = {
+      data,
+      show,
+    };
   }
 }

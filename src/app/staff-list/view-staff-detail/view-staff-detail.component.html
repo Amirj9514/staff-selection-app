@@ -1,0 +1,19 @@
+<div class="grid mx-3 justify-content-between  border-1 border-blue-600 border-round-3xl  overflow-hidden"
+  style="margin-top: 100px;">
+  <div class="col-5">
+    <div class="header mt-5">
+      <div class="flex justify-content-center align-items-center h-full text-2xl font-semibold py-1 ml-4">
+        <img [src]="localStorageData?.user?.logo" alt="logo" height="100%" />
+      </div>
+    </div>
+
+
+    <div class="mt-6 pt-5 text-2xl font-semibold text-center">
+      {{selectedStaff?.name}}
+    </div>
+  </div>
+
+  <div class="col-7 m-0 p-0">
+    <img [src]="selectedStaff?.image" class="w-full" height="w-full" />
+  </div>
+</div>
