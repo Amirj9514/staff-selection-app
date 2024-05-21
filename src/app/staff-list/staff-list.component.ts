@@ -27,6 +27,8 @@ export class StaffListComponent implements OnInit {
     data: null,
     show: false,
   };
+
+  selectedStaffList: any[] = [];
   constructor(
     private sharedS: SharedService,
     private showToastS: ShowToastService
@@ -139,9 +141,38 @@ export class StaffListComponent implements OnInit {
   }
 
   hideShowStaffDetail(data: any, show: boolean) {
-    this.selectedStaff = {
-      data,
-      show,
-    };
+    if (data && this.checkSelectedSaff(data)) {
+      this.selectedStaffList.map((list: any, index: number) => {
+        console.log(list);
+        if (list?.id == data.id) {
+          this.selectedStaffList.splice(index, 1);
+        }
+      });
+    } else {
+      this.selectedStaff = {
+        data,
+        show,
+      };
+    }
+  }
+
+  closrTrigerFromChild(event: { isSelected: boolean; data: any }) {
+    if (event && event.isSelected && event.data) {
+      this.selectedStaffList.push(event.data);
+    } else {
+      this.selectedStaffList = [];
+    }
+    this.hideShowStaffDetail(null, false);
+  }
+
+  checkSelectedSaff(staff: any) {
+    let ret = false;
+    this.selectedStaffList.map((list: any) => {
+      if (list?.id == staff.id) {
+        ret = true;
+      }
+    });
+
+    return ret;
   }
 }

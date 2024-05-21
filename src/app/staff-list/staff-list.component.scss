@@ -4,7 +4,7 @@
   align-items: center;
   width: 35px;
   height: 35px;
-  background-color: #ffffff;
+  background-color: #e9c33b;
   border-radius: 50%;
   color: black;
   font-size: 30px;
@@ -12,11 +12,11 @@
 }
 
 .header {
-  height: 160px;
+  height: 115px;
 }
 
 .filterDropdown {
-  border: 1px solid blue;
+  border: 1px solid #e9c33b;
   border-radius: 25px;
   display: flex;
   justify-content: space-between;
@@ -29,7 +29,7 @@
 }
 
 .safttCard {
-  border: 2px solid blue;
+  border: 2px solid #e9c33b;
   border-radius: 10px;
   overflow: hidden;
 
@@ -46,4 +46,8 @@
     padding: 10px 20px;
     text-align: center;
   }
+}
+
+.tick {
+  color: #50995e;
 }

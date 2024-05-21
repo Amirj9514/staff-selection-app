@@ -1,65 +1,89 @@
 <div class="min-h-screen flex justify-content-center">
   <div class="mainBoadyContainer relative w-full">
-    <!-- <div class="flex" style="position: absolute;
-    top: 20px;
-    left: 10px;">
-      <div class="backIcon">
-        <svg
-          stroke="currentColor"
-          fill="currentColor"
-          stroke-width="0"
-          viewBox="0 0 512 512"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="48"
-            d="M328 112 184 256l144 144"
-          ></path>
-        </svg>
-      </div>
-    </div> -->
-    <div class="header mt-5">
-      <div class="flex justify-content-center align-items-center h-full text-2xl font-semibold py-1 ml-4">
+    <div class="header mt-5" *ngIf="!selectedStaff?.show">
+      <div
+        class="flex justify-content-center align-items-center h-full text-2xl font-semibold py-1 ml-4"
+      >
         <img [src]="localStorageData?.user?.logo" alt="logo" height="100%" />
       </div>
     </div>
-    
-    <div class="staffListBody mx-3 overflow-auto h-full">
-      <div class="flex text-xl font-semibold my-3 text-blue-600">
-        <div class="cursor-pointer" (click)="showFilter = false;resetFilter()">All </div>
-        <div class="mx-3">.</div>
-        <div class="underline cursor-pointer" (click)="showFilter = true;">Filters</div>
-      </div>
-      <form [formGroup]="filterForm" class="filter flex flex-column  my-3 align-items-center" *ngIf="showFilter"
-        (ngSubmit)="ApplayFilter(filterForm)" id="staffFilters">
 
+    <div
+      class="staffListBody mx-3 overflow-auto h-full"
+      *ngIf="!selectedStaff?.show"
+    >
+      <div class="flex text-xl font-semibold my-3 secondary-txt">
+        <div class="cursor-pointer" (click)="showFilter = false; resetFilter()">
+          All
+        </div>
+        <div class="mx-3">.</div>
+        <div class="underline cursor-pointer" (click)="showFilter = true">
+          Filters
+        </div>
+      </div>
+      <form
+        [formGroup]="filterForm"
+        class="filter flex flex-column my-3 align-items-center"
+        *ngIf="showFilter"
+        (ngSubmit)="ApplayFilter(filterForm)"
+        id="staffFilters"
+      >
         <div class="flex gap-3 w-full">
           <div *ngFor="let filter of filterList" class="w-auto">
-            <p-dropdown [formControlName]="filter.filter_name" class="w-full " (onChange)="ApplayFilter(filterForm)"
-              styleClass="w-full border-blue-600 shadow-none border-round-3xl" [options]=" filter.options"
-              optionLabel="option_name" [placeholder]="filter.filter_name " />
+            <p-dropdown
+              [formControlName]="filter.filter_name"
+              class="w-full"
+              (onChange)="ApplayFilter(filterForm)"
+              styleClass="w-full border-clr shadow-none border-round-3xl"
+              [options]="filter.options"
+              optionLabel="option_name"
+              [placeholder]="filter.filter_name"
+            />
           </div>
         </div>
       </form>
 
       <div class="staffListCards grid my-4">
-
-        <div class="col-6 sm:col-4 md:col-3" *ngFor="let staff of filterStafList">
-          <div class="safttCard cursor-pointer" (click)="hideShowStaffDetail(staff , true)" *ngIf="!staffListLoader">
-            <div class="cardHeader overflow-hidden">
+        <div
+          class="col-6 sm:col-4 md:col-3"
+          *ngFor="let staff of filterStafList"
+        >
+          <div
+            class="safttCard cursor-pointer"
+            (click)="hideShowStaffDetail(staff, true)"
+            *ngIf="!staffListLoader"
+          >
+            <div class="cardHeader overflow-hidden relative">
+              <div
+                *ngIf="checkSelectedSaff(staff)"
+                class="absolute text-2xl tick"
+                style="right: 10px; top: 10px"
+              >
+                <svg
+                  stroke="currentColor"
+                  fill="currentColor"
+                  stroke-width="0"
+                  viewBox="0 0 512 512"
+                  height="1em"
+                  width="1em"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M256 48C141.31 48 48 141.31 48 256s93.31 208 208 208 208-93.31 208-208S370.69 48 256 48zm108.25 138.29-134.4 160a16 16 0 0 1-12 5.71h-.27a16 16 0 0 1-11.89-5.3l-57.6-64a16 16 0 1 1 23.78-21.4l45.29 50.32 122.59-145.91a16 16 0 0 1 24.5 20.58z"
+                  ></path>
+                </svg>
+              </div>
               <img width="100%" height="100%" [src]="checkImg(staff?.image)" />
             </div>
-            <div class="cardBody">
+            <div class="cardBody secondary-txt text-xl font-semibold">
               <div>{{ staff?.name }}</div>
             </div>
           </div>
 
-          <div class="border-round border-1 surface-border p-2 surface-card" *ngIf="staffListLoader">
+          <div
+            class="border-round border-1 surface-border p-2 surface-card"
+            *ngIf="staffListLoader"
+          >
             <p-skeleton width="100%" height="150px" />
             <div class="flex justify-content-between mt-3">
               <p-skeleton width="10rem" height="2rem" />
@@ -69,9 +93,13 @@
       </div>
     </div>
 
-    <!-- <div>
-      <app-view-staff-detail [localStorageData]="localStorageData"
-        [selectedStaff]="selectedStaff"></app-view-staff-detail>
-    </div> -->
+    <div *ngIf="selectedStaff?.show">
+      <app-view-staff-detail
+        [localStorageData]="localStorageData"
+        [selectedStaff]="selectedStaff.data"
+        [selectedStaffList]="selectedStaffList"
+        (cancelEvent)="closrTrigerFromChild($event)"
+      ></app-view-staff-detail>
+    </div>
   </div>
 </div>

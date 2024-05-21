@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
   selector: 'app-view-staff-detail',
@@ -8,47 +9,57 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ViewStaffDetailComponent implements OnInit {
   @Input() localStorageData: any;
   @Input() selectedStaff: any;
+  @Input() selectedStaffList: any[] = [];
+  @Output() cancelEvent = new EventEmitter<{
+    isSelected: boolean;
+    data: any;
+  }>();
 
-  constructor() {}
+  visible: boolean = false;
+  showFloorPlan: boolean = false;
+  floorPlan: any[] = [];
+
+  selectedFloor: any;
+
+  constructor(private sharedS: SharedService) {}
   ngOnInit() {
-    this.selectedStaff = {
-      id: '1906',
-      image:
-        'https://s3.amazonaws.com/cdn1.mikronexus.com/2024/05/8_1716224167.jpg',
-      driving_license: '',
-      name: 'Driver 1 ',
-      filters: [
-        {
-          filter_id: '1',
-          filter_name: 'Experience',
-          options: [
-            {
-              option_id: '3',
-              option_name: '7+ Years',
-            },
-          ],
+    // this.getRooms();
+  }
+
+  withoutRoom() {
+    this.cancelEvent.emit({ isSelected: false, data: null });
+    // this.selectedStaffList.push(this.selectedStaff);
+    // console.log(this.selectedStaffList);
+  }
+
+  goBack(data?: { isSelected: boolean; data: any }) {
+    if (data) {
+      this.cancelEvent.emit(data);
+    } else {
+      this.cancelEvent.emit({ isSelected: false, data: null });
+    }
+  }
+
+  getRooms() {
+    this.showFloorPlan = true;
+    this.visible = false;
+    this.sharedS
+      .sendPostRequest('menu/get_business_rooms', { business_id: 76 })
+      .subscribe({
+        next: (res: any) => {
+          console.log(res);
+          if (res.success) {
+            this.floorPlan = res.rooms;
+            if (this.floorPlan && this.floorPlan.length > 0) {
+              this.selectedFloor = this.floorPlan[0];
+            }
+          }
         },
-        {
-          filter_id: '2',
-          filter_name: 'Gender',
-          options: [
-            {
-              option_id: '4',
-              option_name: 'Male',
-            },
-          ],
-        },
-        {
-          filter_id: '3',
-          filter_name: 'Certification',
-          options: [
-            {
-              option_id: '8',
-              option_name: 'B Grade',
-            },
-          ],
-        },
-      ],
-    };
+        error: (err: any) => {},
+      });
+  }
+
+  selectedRoom(floor: any) {
+    this.selectedFloor = floor;
   }
 }

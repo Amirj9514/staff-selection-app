@@ -1,19 +1,153 @@
-<div class="grid mx-3 justify-content-between  border-1 border-blue-600 border-round-3xl  overflow-hidden"
-  style="margin-top: 100px;">
-  <div class="col-5">
-    <div class="header mt-5">
-      <div class="flex justify-content-center align-items-center h-full text-2xl font-semibold py-1 ml-4">
+<div
+  *ngIf="!showFloorPlan"
+  class="grid mx-3 justify-content-between overflow-hidden"
+  style="height: 100vh"
+>
+  <div class="col-4">
+    <div class="flex m-4">
+      <div class="backIcon" (click)="goBack()">
+        <svg
+          stroke="currentColor"
+          fill="currentColor"
+          stroke-width="0"
+          viewBox="0 0 512 512"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="48"
+            d="M328 112 184 256l144 144"
+          ></path>
+        </svg>
+      </div>
+    </div>
+    <div class="header" style="margin-top: 120px">
+      <div
+        class="flex justify-content-center align-items-center h-full text-2xl font-semibold py-1 ml-4"
+      >
         <img [src]="localStorageData?.user?.logo" alt="logo" height="100%" />
       </div>
     </div>
 
+    <div class="mt-6 pt-5 text-5xl font-semibold text-center secondary-txt">
+      {{ selectedStaff?.name }}
+    </div>
 
-    <div class="mt-6 pt-5 text-2xl font-semibold text-center">
-      {{selectedStaff?.name}}
+    <div class="flex justify-content-center my-4">
+      <button class="selectBtn text-3xl" (click)="visible = true">
+        Select
+      </button>
     </div>
   </div>
 
   <div class="col-7 m-0 p-0">
-    <img [src]="selectedStaff?.image" class="w-full" height="w-full" />
+    <img
+      [src]="selectedStaff?.image"
+      style="object-fit: contain"
+      class="w-full"
+      height="100%"
+    />
   </div>
 </div>
+
+<div *ngIf="showFloorPlan">
+  <div
+    (click)="showFloorPlan = false"
+    class="flex"
+    style="position: absolute; top: 20px; left: 10px"
+  >
+    <div class="backIcon">
+      <svg
+        stroke="currentColor"
+        fill="currentColor"
+        stroke-width="0"
+        viewBox="0 0 512 512"
+        height="1em"
+        width="1em"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="48"
+          d="M328 112 184 256l144 144"
+        ></path>
+      </svg>
+    </div>
+  </div>
+  <div class="header">
+    <div
+      class="flex justify-content-center align-items-center h-full text-2xl font-semibold py-1 ml-4"
+    >
+      <img [src]="localStorageData?.user?.logo" alt="logo" height="100%" />
+    </div>
+  </div>
+
+  <div class="grid justify-content-between" style="margin-top: 100px">
+    <div class="col-3">
+      <div
+        class="roomTab mb-4"
+        *ngFor="let floor of floorPlan"
+        (click)="selectedRoom(floor)"
+      >
+        {{ floor?.room_name }}
+      </div>
+    </div>
+    <div class="col-8" style="background-color: silver">
+      <div style="border-radius: 6px">
+        <img [src]="selectedFloor?.floor_plan" />
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Pop Up -->
+<p-dialog
+  id="choicePop"
+  header=""
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [(visible)]="visible"
+  [style]="{ width: '50rem' }"
+>
+  <!-- <span class="p-text-secondary block mb-5">Update your information.</span> -->
+  <div class="flex justify-content-end mt-3">
+    <div class="flex text-xl cursor-pointer" (click)="visible = false">
+      <svg
+        stroke="currentColor"
+        fill="currentColor"
+        stroke-width="0"
+        viewBox="0 0 1024 1024"
+        fill-rule="evenodd"
+        height="1em"
+        width="1em"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M799.855 166.312c.023.007.043.018.084.059l57.69 57.69c.041.041.052.06.059.084a.118.118 0 0 1 0 .069c-.007.023-.018.042-.059.083L569.926 512l287.703 287.703c.041.04.052.06.059.083a.118.118 0 0 1 0 .07c-.007.022-.018.042-.059.083l-57.69 57.69c-.041.041-.06.052-.084.059a.118.118 0 0 1-.069 0c-.023-.007-.042-.018-.083-.059L512 569.926 224.297 857.629c-.04.041-.06.052-.083.059a.118.118 0 0 1-.07 0c-.022-.007-.042-.018-.083-.059l-57.69-57.69c-.041-.041-.052-.06-.059-.084a.118.118 0 0 1 0-.069c.007-.023.018-.042.059-.083L454.073 512 166.371 224.297c-.041-.04-.052-.06-.059-.083a.118.118 0 0 1 0-.07c.007-.022.018-.042.059-.083l57.69-57.69c.041-.041.06-.052.084-.059a.118.118 0 0 1 .069 0c.023.007.042.018.083.059L512 454.073l287.703-287.702c.04-.041.06-.052.083-.059a.118.118 0 0 1 .07 0Z"
+        ></path>
+      </svg>
+    </div>
+  </div>
+  <div class="flex flex-column w-full gap-3 justify-content-center pt-4">
+    <button class="selectBtn text-3xl" (click)="withoutRoom()">
+      Select Staff With No Room
+    </button>
+    <button class="selectBtn text-3xl" (click)="getRooms()">Select Room</button>
+    <button
+      class="selectBtn text-3xl"
+      (click)="goBack({ isSelected: true, data: selectedStaff })"
+    >
+      Add Additional Staff for Room
+    </button>
+    <button class="selectBtn text-3xl" (click)="withoutRoom()">
+      Back: Select Different Staff
+    </button>
+  </div>
+</p-dialog>

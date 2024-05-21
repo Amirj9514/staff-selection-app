@@ -12,7 +12,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
-
+import { DialogModule } from 'primeng/dialog';
 @NgModule({
   declarations: [ToastComponent],
   imports: [
@@ -27,6 +27,7 @@ import { RippleModule } from 'primeng/ripple';
     DropdownModule,
     ButtonModule,
     RippleModule,
+    DialogModule,
     // -------------------------------------------
     // Not Shared Modules
   ],
@@ -42,6 +43,7 @@ import { RippleModule } from 'primeng/ripple';
     DropdownModule,
     ButtonModule,
     RippleModule,
+    DialogModule,
   ],
   providers: [MessageService],
 })
