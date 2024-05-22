@@ -38,7 +38,10 @@
     </div>
 
     <div class="flex justify-content-center my-4">
-      <button class="selectBtn text-3xl" (click)="visible = true">
+      <button
+        class="selectBtn text-3xl clickAnimation"
+        (click)="visible = true"
+      >
         Select
       </button>
     </div>
@@ -136,17 +139,19 @@
     </div>
   </div>
   <div class="flex flex-column w-full gap-3 justify-content-center pt-4">
-    <button class="selectBtn text-3xl" (click)="withoutRoom()">
+    <button class="selectBtn text-3xl clickAnimation" (click)="withoutRoom()">
       Select Staff With No Room
     </button>
-    <button class="selectBtn text-3xl" (click)="getRooms()">Select Room</button>
+    <button class="selectBtn text-3xl clickAnimation" (click)="getRooms()">
+      Select Room
+    </button>
     <button
-      class="selectBtn text-3xl"
+      class="selectBtn text-3xl clickAnimation"
       (click)="goBack({ isSelected: true, data: selectedStaff })"
     >
       Add Additional Staff for Room
     </button>
-    <button class="selectBtn text-3xl" (click)="withoutRoom()">
+    <button class="selectBtn text-3xl clickAnimation" (click)="withoutRoom()">
       Back: Select Different Staff
     </button>
   </div>

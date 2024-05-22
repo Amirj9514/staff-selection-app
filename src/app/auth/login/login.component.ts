@@ -78,6 +78,7 @@ export class LoginComponent implements OnInit {
         inputVal = inputVal.slice(0, val);
       } else {
         inputVal = '';
+        this.goBack();
       }
       this.loginForm.controls[controlName].setValue(inputVal);
     }
@@ -133,7 +134,7 @@ export class LoginComponent implements OnInit {
           this.loginLoader = false;
           if (res.status && (res.status == 'true' || res.status == true)) {
             this.sharedS.insertData({ key: 'user', val: res });
-            this.router.navigateByUrl('/staffList');
+            this.router.navigateByUrl('/home');
           } else {
             this.showToastS.setToast({
               show: true,

@@ -22,7 +22,7 @@ export class StaffListComponent implements OnInit {
 
   filterForm!: FormGroup;
   formControlList: string[] = [];
-  showFilter: boolean = false;
+  showFilter: boolean = true;
   selectedStaff: { data: any; show: boolean } = {
     data: null,
     show: false,

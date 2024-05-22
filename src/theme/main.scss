@@ -40,10 +40,32 @@
 
 *::-webkit-scrollbar-thumb:hover {
   background: rgb(200, 200, 200);
+  
+}
+.ripple {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.9);
+  transform: scale(0);
+  animation: ripple-animation 600ms linear;
+  pointer-events: none;
+}
+
+@keyframes ripple-animation {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
 }
 
 #choicePop {
   .p-dialog-header {
     display: none !important;
+  }
+}
+
+.clickAnimation {
+  &:active {
+    transform: translateY(4px);
   }
 }

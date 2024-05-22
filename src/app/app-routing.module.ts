@@ -8,6 +8,11 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
   },
   {
+    path: 'home',
+    canActivate: [authGuard],
+    loadChildren: () => import('./home/home.module').then((m) => m.HomeModule),
+  },
+  {
     path: 'staffList',
     canActivate: [authGuard],
     loadChildren: () =>
