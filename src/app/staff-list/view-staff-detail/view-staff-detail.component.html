@@ -101,7 +101,7 @@
         />
       </div>
     </div>
-    <div class="col-7 h-full">
+    <div class="col-7 h-full relative">
       <div style="height: 60%" class="mt-6">
         <img
           [src]="activeStaff?.staff?.image"
@@ -109,6 +109,30 @@
           class="w-full"
           height="100%"
         />
+      </div>
+
+      <div class="absolute" style="bottom: 30px; right: 10px">
+        <div
+          class="border-1 border-clr py-3 px-3 border-round-2xl secondary-txt flex align-items-center"
+        >
+          <div>Continue</div>
+          <div class="mr-3 mt-1">
+            <svg
+              stroke="currentColor"
+              fill="currentColor"
+              stroke-width="0"
+              viewBox="0 0 24 24"
+              height="1em"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path fill="none" d="M0 0h24v24H0V0z"></path>
+              <path
+                d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
+              ></path>
+            </svg>
+          </div>
+        </div>
       </div>
     </div>
   </div>
