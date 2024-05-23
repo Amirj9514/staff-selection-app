@@ -45,7 +45,7 @@ export class LoginComponent implements OnInit {
 
         // redirect user if user id exist in localStorage Data
         if (user && user.id && user.id.length > 0) {
-          this.router.navigateByUrl('/staffList');
+          this.router.navigateByUrl('/home');
         }
       });
   }
