@@ -40,7 +40,6 @@
 
 *::-webkit-scrollbar-thumb:hover {
   background: rgb(200, 200, 200);
-  
 }
 .ripple {
   position: absolute;
@@ -67,5 +66,15 @@
 .clickAnimation {
   &:active {
     transform: translateY(4px);
+  }
+}
+
+#dropdownFilter {
+  .p-dropdown-label {
+    color: #ffffff !important;
+  }
+
+  .p-dropdown-trigger {
+    color: #ffffff;
   }
 }

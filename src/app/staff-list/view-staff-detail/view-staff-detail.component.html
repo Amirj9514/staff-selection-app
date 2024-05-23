@@ -1,59 +1,116 @@
 <div
   *ngIf="!showFloorPlan"
-  class="grid mx-3 justify-content-between overflow-hidden"
-  style="height: 100vh"
+  class="mx-3 justify-content-between overflow-hidden"
 >
-  <div class="col-4">
-    <div class="flex m-4">
-      <div class="backIcon" (click)="goBack()">
-        <svg
-          stroke="currentColor"
-          fill="currentColor"
-          stroke-width="0"
-          viewBox="0 0 512 512"
-          height="1em"
-          width="1em"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="48"
-            d="M328 112 184 256l144 144"
-          ></path>
-        </svg>
-      </div>
-    </div>
-    <div class="header" style="margin-top: 120px">
+  <div class="flex justify-content-between my-3">
+    <div class="flex gap-3">
       <div
-        class="flex justify-content-center align-items-center h-full text-2xl font-semibold py-1 ml-4"
+        (click)="goBack()"
+        class="flex align-items-center px-3 py-2 border-round-xl border-1 border-clr"
       >
-        <img [src]="localStorageData?.user?.logo" alt="logo" height="100%" />
+        <div class="backIcon">
+          <svg
+            stroke="currentColor"
+            fill="currentColor"
+            stroke-width="0"
+            viewBox="0 0 512 512"
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="48"
+              d="M328 112 184 256l144 144"
+            ></path>
+          </svg>
+        </div>
+        <div class="ml-3 text-xl font-semibold secondary-txt">Back</div>
+      </div>
+
+      <div
+        (click)="visible = true"
+        class="selectBtn flex px-3 py-2 border-1 border-round-xl secondary-bg align-items-center text-xl font-semibold"
+      >
+        Select Service
       </div>
     </div>
 
-    <div class="mt-6 pt-5 text-5xl font-semibold text-center secondary-txt">
-      {{ selectedStaff?.name }}
-    </div>
-
-    <div class="flex justify-content-center my-4">
-      <button
-        class="selectBtn text-3xl clickAnimation"
-        (click)="visible = true"
-      >
-        Select
-      </button>
+    <div class="flex align-items-center gap-3">
+      <div>
+        <div class="backIcon" (click)="prev(activeStaff.index)">
+          <svg
+            stroke="currentColor"
+            fill="currentColor"
+            stroke-width="0"
+            viewBox="0 0 24 24"
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path fill="none" d="M0 0h24v24H0V0z"></path>
+            <path
+              d="M15.41 16.59 10.83 12l4.58-4.59L14 6l-6 6 6 6 1.41-1.41z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+      <div>{{ activeStaff.index + 1 }} / {{ allStaffList?.length }}</div>
+      <div>
+        <div class="backIcon" (click)="next(activeStaff.index)">
+          <svg
+            stroke="currentColor"
+            fill="currentColor"
+            stroke-width="0"
+            viewBox="0 0 24 24"
+            height="1em"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path fill="none" d="M0 0h24v24H0V0z"></path>
+            <path
+              d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"
+            ></path>
+          </svg>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="col-7 m-0 p-0">
-    <img
-      [src]="selectedStaff?.image"
-      style="object-fit: contain"
-      class="w-full"
-      height="100%"
-    />
+  <div class="grid mx-0 justify-content-between" style="height: 90vh">
+    <div class="col-4 relative h-full">
+      <div class="text-3xl font-semibold secondary-txt mt-6">
+        {{ activeStaff?.staff?.name }}
+      </div>
+
+      <div class="secondary-txt line-height-3 mt-3">
+        Lorem ipsum dolor sit amet, consectetur incididunt ut labore et dolore
+        magna aliqua.Lorem ipsum dolor sit amet, consectetur incididunt ut
+        labore et dolore magna aliqua.Lorem ipsum dolor sit amet, consectetur
+        incididunt ut labore et dolore magna aliqua.
+      </div>
+
+      <div class="absolute" style="bottom: 30px">
+        <img
+          [src]="localStorageData?.user?.logo"
+          alt="logo"
+          style="object-fit: cover"
+          width="110px"
+        />
+      </div>
+    </div>
+    <div class="col-7 h-full">
+      <div style="height: 60%" class="mt-6">
+        <img
+          [src]="activeStaff?.staff?.image"
+          style="object-fit: contain"
+          class="w-full"
+          height="100%"
+        />
+      </div>
+    </div>
   </div>
 </div>
 
@@ -117,28 +174,67 @@
   [draggable]="false"
   [resizable]="false"
   [(visible)]="visible"
-  [style]="{ width: '50rem' }"
+  [style]="{ width: '50rem', overflow: 'hidden', borderRadius: '16px' }"
 >
   <!-- <span class="p-text-secondary block mb-5">Update your information.</span> -->
   <div class="flex justify-content-end mt-3">
-    <div class="flex text-xl cursor-pointer" (click)="visible = false">
-      <svg
-        stroke="currentColor"
-        fill="currentColor"
-        stroke-width="0"
-        viewBox="0 0 1024 1024"
-        fill-rule="evenodd"
-        height="1em"
-        width="1em"
-        xmlns="http://www.w3.org/2000/svg"
+    <div
+      (click)="visible = false"
+      class="flex align-items-center px-3 py-2 my-4 border-round-2xl border-1 border-clr"
+    >
+      <div class="backIcon">
+        <svg
+          stroke="currentColor"
+          fill="currentColor"
+          stroke-width="0"
+          viewBox="0 0 1024 1024"
+          fill-rule="evenodd"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M799.855 166.312c.023.007.043.018.084.059l57.69 57.69c.041.041.052.06.059.084a.118.118 0 0 1 0 .069c-.007.023-.018.042-.059.083L569.926 512l287.703 287.703c.041.04.052.06.059.083a.118.118 0 0 1 0 .07c-.007.022-.018.042-.059.083l-57.69 57.69c-.041.041-.06.052-.084.059a.118.118 0 0 1-.069 0c-.023-.007-.042-.018-.083-.059L512 569.926 224.297 857.629c-.04.041-.06.052-.083.059a.118.118 0 0 1-.07 0c-.022-.007-.042-.018-.083-.059l-57.69-57.69c-.041-.041-.052-.06-.059-.084a.118.118 0 0 1 0-.069c.007-.023.018-.042.059-.083L454.073 512 166.371 224.297c-.041-.04-.052-.06-.059-.083a.118.118 0 0 1 0-.07c.007-.022.018-.042.059-.083l57.69-57.69c.041-.041.06-.052.084-.059a.118.118 0 0 1 .069 0c.023.007.042.018.083.059L512 454.073l287.703-287.702c.04-.041.06-.052.083-.059a.118.118 0 0 1 .07 0Z"
+          ></path>
+        </svg>
+      </div>
+      <div class="ml-3 text-xl font-semibold secondary-txt">Close</div>
+    </div>
+    <div class="flex text-xl cursor-pointer"></div>
+  </div>
+
+  <div class="grid mt-3">
+    <div class="col-6 h-full">
+      <div
+        class="py-3 h-full px-2 text-center border-1 border-clr border-round-3xl text-2xl font-semibold secondary-txt"
       >
-        <path
-          d="M799.855 166.312c.023.007.043.018.084.059l57.69 57.69c.041.041.052.06.059.084a.118.118 0 0 1 0 .069c-.007.023-.018.042-.059.083L569.926 512l287.703 287.703c.041.04.052.06.059.083a.118.118 0 0 1 0 .07c-.007.022-.018.042-.059.083l-57.69 57.69c-.041.041-.06.052-.084.059a.118.118 0 0 1-.069 0c-.023-.007-.042-.018-.083-.059L512 569.926 224.297 857.629c-.04.041-.06.052-.083.059a.118.118 0 0 1-.07 0c-.022-.007-.042-.018-.083-.059l-57.69-57.69c-.041-.041-.052-.06-.059-.084a.118.118 0 0 1 0-.069c.007-.023.018-.042.059-.083L454.073 512 166.371 224.297c-.041-.04-.052-.06-.059-.083a.118.118 0 0 1 0-.07c.007-.022.018-.042.059-.083l57.69-57.69c.041-.041.06-.052.084-.059a.118.118 0 0 1 .069 0c.023.007.042.018.083.059L512 454.073l287.703-287.702c.04-.041.06-.052.083-.059a.118.118 0 0 1 .07 0Z"
-        ></path>
-      </svg>
+        Select Staff With No Room
+      </div>
+    </div>
+    <div class="col-6 h-full">
+      <div
+        class="py-3 h-full px-2 text-center border-1 border-clr border-round-3xl text-2xl font-semibold secondary-txt"
+      >
+        Select Room
+      </div>
+    </div>
+    <div class="col-6 h-full">
+      <div
+        class="py-3 h-full px-2 text-center border-1 border-clr border-round-3xl text-2xl font-semibold secondary-txt"
+      >
+        Add Additional Staff for Room
+      </div>
+    </div>
+
+    <div class="col-6 h-full">
+      <div
+        class="py-3 h-full px-2 text-center border-1 border-clr border-round-3xl text-2xl font-semibold secondary-txt"
+      >
+        Back: Select Different Staff
+      </div>
     </div>
   </div>
-  <div class="flex flex-column w-full gap-3 justify-content-center pt-4">
+  <!-- <div class="flex flex-column w-full gap-3 justify-content-center pt-4">
     <button class="selectBtn text-3xl clickAnimation" (click)="withoutRoom()">
       Select Staff With No Room
     </button>
@@ -154,5 +250,5 @@
     <button class="selectBtn text-3xl clickAnimation" (click)="withoutRoom()">
       Back: Select Different Staff
     </button>
-  </div>
+  </div> -->
 </p-dialog>

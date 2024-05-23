@@ -13,6 +13,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DialogModule } from 'primeng/dialog';
+
+import { FloatLabelModule } from 'primeng/floatlabel';
 @NgModule({
   declarations: [ToastComponent],
   imports: [
@@ -28,6 +30,7 @@ import { DialogModule } from 'primeng/dialog';
     ButtonModule,
     RippleModule,
     DialogModule,
+    FloatLabelModule,
     // -------------------------------------------
     // Not Shared Modules
   ],
@@ -43,6 +46,7 @@ import { DialogModule } from 'primeng/dialog';
     DropdownModule,
     ButtonModule,
     RippleModule,
+    FloatLabelModule,
     DialogModule,
   ],
   providers: [MessageService],

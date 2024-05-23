@@ -91,9 +91,21 @@ export class StaffListComponent implements OnInit {
     filter.map((data: StaffFilter) => {
       if (data.filter_name && data.filter_name.length > 0) {
         this.formControlList.push(data.filter_name);
-        this.filterForm.addControl(data.filter_name, new FormControl(''));
+        this.filterForm.addControl(data.filter_name, new FormControl(null));
       }
     });
+  }
+
+  checkVal() {
+    let ret = false;
+    this.formControlList.map((control: string) => {
+      let val = this.filterForm.controls[control].value;
+      if (val) {
+        ret = true;
+      }
+    });
+
+    return ret;
   }
 
   checkImg(img: string) {

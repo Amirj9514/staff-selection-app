@@ -10,10 +10,16 @@ export class ViewStaffDetailComponent implements OnInit {
   @Input() localStorageData: any;
   @Input() selectedStaff: any;
   @Input() selectedStaffList: any[] = [];
+  @Input() allStaffList: any[] = [];
   @Output() cancelEvent = new EventEmitter<{
     isSelected: boolean;
     data: any;
   }>();
+
+  activeStaff: { index: number; staff: any } = {
+    index: NaN,
+    staff: null,
+  };
 
   visible: boolean = false;
   showFloorPlan: boolean = false;
@@ -23,7 +29,13 @@ export class ViewStaffDetailComponent implements OnInit {
 
   constructor(private sharedS: SharedService) {}
   ngOnInit() {
-    // this.getRooms();
+    this.allStaffList.map((staff: any, index: number) => {
+      if (staff.id == this.selectedStaff.id) {
+        console.log(staff);
+        this.activeStaff = { index, staff };
+        console.log(this.activeStaff);
+      }
+    });
   }
 
   withoutRoom() {
@@ -61,5 +73,24 @@ export class ViewStaffDetailComponent implements OnInit {
 
   selectedRoom(floor: any) {
     this.selectedFloor = floor;
+  }
+
+  next(index: number) {
+    let leng = this.allStaffList.length;
+    if (leng > index + 1) {
+      this.activeStaff = {
+        index: index + 1,
+        staff: this.allStaffList[index + 1],
+      };
+    }
+  }
+
+  prev(index: number) {
+    if (index > 0) {
+      this.activeStaff = {
+        index: index - 1,
+        staff: this.allStaffList[index - 1],
+      };
+    }
   }
 }
