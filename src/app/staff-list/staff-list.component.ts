@@ -4,8 +4,12 @@ import { ShowToastService } from '../shared/services/show-toast.service';
 import { FormControl, FormGroup } from '@angular/forms';
 import {
   FilterCriteria,
+  Staff,
   StaffFilter,
+  staffFilterOption,
 } from '../shared/interfaces/staffFilter.interface';
+import { StaffModuleService } from '../shared/services/staff-module.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-staff-list',
@@ -13,8 +17,9 @@ import {
   styleUrls: ['./staff-list.component.scss'],
 })
 export class StaffListComponent implements OnInit {
-  stafList: any[] = [];
-  filterStafList: any[] = [];
+  stafList: Staff[] = [];
+  filterStafList: Staff[] = [];
+  loadingArr: string[] = [];
   localStorageData: any;
 
   filterList: StaffFilter[] = [];
@@ -23,15 +28,17 @@ export class StaffListComponent implements OnInit {
   filterForm!: FormGroup;
   formControlList: string[] = [];
   showFilter: boolean = true;
-  selectedStaff: { data: any; show: boolean } = {
+  selectedStaff: { data: Staff | null; show: boolean } = {
     data: null,
     show: false,
   };
 
-  selectedStaffList: any[] = [];
+  selectedStaffList: Staff[] = [];
   constructor(
     private sharedS: SharedService,
-    private showToastS: ShowToastService
+    private showToastS: ShowToastService,
+    private staffS: StaffModuleService,
+    private router: Router
   ) {
     this.filterForm = new FormGroup({});
   }
@@ -50,8 +57,8 @@ export class StaffListComponent implements OnInit {
     let apiParam: { business_id: string } = {
       business_id: '76',
     };
-
-    this.stafList = Array.from({ length: 12 }).map((_, i) => `Item #${i}`);
+    this.loadingArr = [];
+    this.loadingArr = Array.from({ length: 12 }).map((_, i) => `Item #${i}`);
     this.filterStafList = this.stafList;
     this.staffListLoader = true;
     this.sharedS
@@ -131,16 +138,17 @@ export class StaffListComponent implements OnInit {
     }, {} as { [key: string]: any });
   }
 
-  filterStaffList(staffList: any[], criteria: FilterCriteria): StaffFilter[] {
-    return staffList.filter((staff: any) => {
+  filterStaffList(staffList: Staff[], criteria: FilterCriteria): Staff[] {
+    return staffList.filter((staff: Staff) => {
       return Object.entries(criteria).every(([filterName, filterOption]) => {
         const driverFilter = staff.filters.find(
-          (f: any) => f.filter_name === filterName
+          (f: StaffFilter) => f.filter_name === filterName
         );
         return (
           driverFilter &&
           driverFilter.options.some(
-            (option: any) => option.option_id === filterOption.option_id
+            (option: staffFilterOption) =>
+              option.option_id === filterOption.option_id
           )
         );
       });
@@ -152,10 +160,15 @@ export class StaffListComponent implements OnInit {
     this.filterForm.reset();
   }
 
-  hideShowStaffDetail(data: any, show: boolean) {
+  addStaffList(data: Staff) {
+    this.staffS.setSelectedStaff(data);
+    this.staffS.updateStaffList(this.filterStafList);
+    this.router.navigateByUrl('/staffList/viewStaff');
+  }
+
+  hideShowStaffDetail(data: Staff | null, show: boolean) {
     if (data && this.checkSelectedSaff(data)) {
-      this.selectedStaffList.map((list: any, index: number) => {
-        console.log(list);
+      this.selectedStaffList.map((list: Staff, index: number) => {
         if (list?.id == data.id) {
           this.selectedStaffList.splice(index, 1);
         }
@@ -168,18 +181,24 @@ export class StaffListComponent implements OnInit {
     }
   }
 
-  closrTrigerFromChild(event: { isSelected: boolean; data: any }) {
+  closrTrigerFromChild(event: { isSelected: boolean; data: Staff }) {
     if (event && event.isSelected && event.data) {
       this.selectedStaffList.push(event.data);
     } else {
-      this.selectedStaffList = [];
+      // this.selectedStaffList = [];
     }
     this.hideShowStaffDetail(null, false);
   }
 
-  checkSelectedSaff(staff: any) {
+  upadteTrigerFromChild(event: { data: Staff[] }) {
+    if (event && event.data) {
+      this.selectedStaffList = event.data;
+    }
+  }
+
+  checkSelectedSaff(staff: Staff) {
     let ret = false;
-    this.selectedStaffList.map((list: any) => {
+    this.selectedStaffList.map((list: Staff) => {
       if (list?.id == staff.id) {
         ret = true;
       }

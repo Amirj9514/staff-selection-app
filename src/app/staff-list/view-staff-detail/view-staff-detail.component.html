@@ -5,7 +5,7 @@
   <div class="flex justify-content-between my-3">
     <div class="flex gap-3">
       <div
-        (click)="goBack()"
+        (click)="redirect('/staffList')"
         class="flex align-items-center px-3 py-2 border-round-xl border-1 border-clr"
       >
         <div class="backIcon">
@@ -31,8 +31,9 @@
       </div>
 
       <div
-        (click)="visible = true"
-        class="selectBtn flex px-3 py-2 border-1 border-round-xl secondary-bg align-items-center text-xl font-semibold"
+        (click)="addStaff()"
+        class="selectBtn flex px-3 py-2 border-1 border-round-xl align-items-center text-xl font-semibold"
+        [ngClass]="isSelected() ? 'secondary-bg text-dark' : ' secondary-txt'"
       >
         Select Service
       </div>
@@ -57,7 +58,7 @@
           </svg>
         </div>
       </div>
-      <div>{{ activeStaff.index + 1 }} / {{ allStaffList?.length }}</div>
+      <div>{{ activeStaff.index + 1 }} / {{ allStaffList.length }}</div>
       <div>
         <div class="backIcon" (click)="next(activeStaff.index)">
           <svg
@@ -82,7 +83,7 @@
   <div class="grid mx-0 justify-content-between" style="height: 90vh">
     <div class="col-4 relative h-full">
       <div class="text-3xl font-semibold secondary-txt mt-6">
-        {{ activeStaff?.staff?.name }}
+        {{ activeStaff && activeStaff.staff ? activeStaff.staff?.name : "" }}
       </div>
 
       <div class="secondary-txt line-height-3 mt-3">
@@ -104,7 +105,9 @@
     <div class="col-7 h-full relative">
       <div style="height: 60%" class="mt-6">
         <img
-          [src]="activeStaff?.staff?.image"
+          [src]="
+            activeStaff && activeStaff.staff ? activeStaff.staff?.image : ''
+          "
           style="object-fit: contain"
           class="w-full"
           height="100%"
@@ -113,10 +116,11 @@
 
       <div class="absolute" style="bottom: 30px; right: 10px">
         <div
+          (click)="visible = true"
           class="border-1 border-clr py-3 px-3 border-round-2xl secondary-txt flex align-items-center"
         >
-          <div>Continue</div>
-          <div class="mr-3 mt-1">
+          <div class="mr-3 text-xl font-semibold">Continue</div>
+          <div class="ContinueArrow">
             <svg
               stroke="currentColor"
               fill="currentColor"
@@ -137,57 +141,12 @@
     </div>
   </div>
 </div>
-
+<!-- -->
 <div *ngIf="showFloorPlan">
-  <div
-    (click)="showFloorPlan = false"
-    class="flex"
-    style="position: absolute; top: 20px; left: 10px"
-  >
-    <div class="backIcon">
-      <svg
-        stroke="currentColor"
-        fill="currentColor"
-        stroke-width="0"
-        viewBox="0 0 512 512"
-        height="1em"
-        width="1em"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="48"
-          d="M328 112 184 256l144 144"
-        ></path>
-      </svg>
-    </div>
-  </div>
-  <div class="header">
-    <div
-      class="flex justify-content-center align-items-center h-full text-2xl font-semibold py-1 ml-4"
-    >
-      <img [src]="localStorageData?.user?.logo" alt="logo" height="100%" />
-    </div>
-  </div>
-
-  <div class="grid justify-content-between" style="margin-top: 100px">
-    <div class="col-3">
-      <div
-        class="roomTab mb-4"
-        *ngFor="let floor of floorPlan"
-        (click)="selectedRoom(floor)"
-      >
-        {{ floor?.room_name }}
-      </div>
-    </div>
-    <div class="col-8" style="background-color: silver">
-      <div style="border-radius: 6px">
-        <img [src]="selectedFloor?.floor_plan" />
-      </div>
-    </div>
-  </div>
+  <app-select-room
+    [localStorageData]="localStorageData"
+    (cancelEvent)="CloseTrigerFromChild()"
+  ></app-select-room>
 </div>
 
 <!-- Pop Up -->
@@ -230,6 +189,7 @@
   <div class="grid mt-3">
     <div class="col-6 h-full">
       <div
+        (click)="withoutRoom()"
         class="py-3 h-full px-2 text-center border-1 border-clr border-round-3xl text-2xl font-semibold secondary-txt"
       >
         Select Staff With No Room
@@ -237,6 +197,7 @@
     </div>
     <div class="col-6 h-full">
       <div
+        (click)="getRooms()"
         class="py-3 h-full px-2 text-center border-1 border-clr border-round-3xl text-2xl font-semibold secondary-txt"
       >
         Select Room
@@ -244,6 +205,7 @@
     </div>
     <div class="col-6 h-full">
       <div
+        (click)="goBack({ isSelected: true, data: activeStaff.staff })"
         class="py-3 h-full px-2 text-center border-1 border-clr border-round-3xl text-2xl font-semibold secondary-txt"
       >
         Add Additional Staff for Room
@@ -252,27 +214,11 @@
 
     <div class="col-6 h-full">
       <div
+        (click)="withoutRoom()"
         class="py-3 h-full px-2 text-center border-1 border-clr border-round-3xl text-2xl font-semibold secondary-txt"
       >
         Back: Select Different Staff
       </div>
     </div>
   </div>
-  <!-- <div class="flex flex-column w-full gap-3 justify-content-center pt-4">
-    <button class="selectBtn text-3xl clickAnimation" (click)="withoutRoom()">
-      Select Staff With No Room
-    </button>
-    <button class="selectBtn text-3xl clickAnimation" (click)="getRooms()">
-      Select Room
-    </button>
-    <button
-      class="selectBtn text-3xl clickAnimation"
-      (click)="goBack({ isSelected: true, data: selectedStaff })"
-    >
-      Add Additional Staff for Room
-    </button>
-    <button class="selectBtn text-3xl clickAnimation" (click)="withoutRoom()">
-      Back: Select Different Staff
-    </button>
-  </div> -->
 </p-dialog>

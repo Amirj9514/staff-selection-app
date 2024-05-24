@@ -12,3 +12,10 @@ export interface staffFilterOption {
 export interface FilterCriteria {
   [key: string]: staffFilterOption;
 }
+
+export interface Staff {
+  name: string;
+  image: string;
+  id: string;
+  filters: StaffFilter[];
+}

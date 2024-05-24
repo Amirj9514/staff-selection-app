@@ -1,6 +1,9 @@
 <div class="min-h-screen flex justify-content-center">
   <div class="mainBoadyContainer relative w-full">
-    <div class="staffListBody grid" *ngIf="!selectedStaff?.show">
+    <div
+      class="staffListBody"
+      [ngClass]="selectedStaff.show ? 'hidden' : 'grid'"
+    >
       <div class="col-2">
         <div class="" *ngIf="!selectedStaff?.show">
           <div class="" style="position: absolute; right: 10px; top: 35px">
@@ -90,14 +93,14 @@
           </div>
         </form>
         <div class="overflow-auto" style="height: 93vh">
-          <div class="staffListCards grid my-4">
+          <div class="staffListCards grid my-4" *ngIf="!staffListLoader">
             <div
               class="col-6 sm:col-4 md:col-3"
               *ngFor="let staff of filterStafList"
             >
               <div
                 class="safttCard cursor-pointer"
-                (click)="hideShowStaffDetail(staff, true)"
+                (click)="addStaffList(staff)"
                 *ngIf="!staffListLoader"
               >
                 <div class="cardHeader overflow-hidden relative">
@@ -123,17 +126,23 @@
                   <img
                     width="100%"
                     height="100%"
-                    [src]="checkImg(staff?.image)"
+                    [src]="checkImg(staff.image)"
                   />
                 </div>
                 <div class="cardBody secondary-txt text-xl font-semibold">
                   <div>{{ staff?.name }}</div>
                 </div>
               </div>
+            </div>
+          </div>
 
+          <div class="staffListCards grid my-4" *ngIf="staffListLoader">
+            <div
+              class="col-6 sm:col-4 md:col-3"
+              *ngFor="let staff of loadingArr"
+            >
               <div
                 class="border-round border-1 surface-border p-2 surface-card"
-                *ngIf="staffListLoader"
               >
                 <p-skeleton width="100%" height="150px" />
                 <div class="flex justify-content-between mt-3">
@@ -156,14 +165,15 @@
       </div>
     </div>
 
-    <div *ngIf="selectedStaff?.show">
+    <!-- <div *ngIf="selectedStaff?.show">
       <app-view-staff-detail
         [localStorageData]="localStorageData"
         [selectedStaff]="selectedStaff.data"
         [allStaffList]="filterStafList"
         [selectedStaffList]="selectedStaffList"
         (cancelEvent)="closrTrigerFromChild($event)"
+        (updateStaffList)="upadteTrigerFromChild($event)"
       ></app-view-staff-detail>
-    </div>
+    </div> -->
   </div>
 </div>

@@ -18,6 +18,8 @@ const routes: Routes = [
     loadChildren: () =>
       import('./staff-list/staff-list.module').then((m) => m.StaffListModule),
   },
+
+ 
   {
     path: '',
     redirectTo: 'login',

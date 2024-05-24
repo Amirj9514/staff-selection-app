@@ -1,5 +1,9 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { pipe, take } from 'rxjs';
+import { Staff } from 'src/app/shared/interfaces/staffFilter.interface';
 import { SharedService } from 'src/app/shared/services/shared.service';
+import { StaffModuleService } from 'src/app/shared/services/staff-module.service';
 
 @Component({
   selector: 'app-view-staff-detail',
@@ -7,15 +11,17 @@ import { SharedService } from 'src/app/shared/services/shared.service';
   styleUrls: ['./view-staff-detail.component.scss'],
 })
 export class ViewStaffDetailComponent implements OnInit {
-  @Input() localStorageData: any;
-  @Input() selectedStaff: any;
-  @Input() selectedStaffList: any[] = [];
-  @Input() allStaffList: any[] = [];
   @Output() cancelEvent = new EventEmitter<{
     isSelected: boolean;
     data: any;
   }>();
 
+  @Output() updateStaffList = new EventEmitter<{ data: any }>();
+
+  localStorageData: any;
+  selectedStaff: Staff | null = null;
+  allStaffList: Staff[] = [];
+  selectedStaffList: Staff[] = [];
   activeStaff: { index: number; staff: any } = {
     index: NaN,
     staff: null,
@@ -27,15 +33,45 @@ export class ViewStaffDetailComponent implements OnInit {
 
   selectedFloor: any;
 
-  constructor(private sharedS: SharedService) {}
+  constructor(
+    private sharedS: SharedService,
+    private staffS: StaffModuleService,
+    private router: Router
+  ) {}
   ngOnInit() {
-    this.allStaffList.map((staff: any, index: number) => {
-      if (staff.id == this.selectedStaff.id) {
-        console.log(staff);
-        this.activeStaff = { index, staff };
-        console.log(this.activeStaff);
-      }
-    });
+    this.getLocalStorageData();
+    this.getSelectedStaff();
+    this.getAllStaffList();
+  }
+  getLocalStorageData() {
+    this.sharedS
+      .getData()
+      .pipe(take(1))
+      .subscribe((data: any) => {
+        this.localStorageData = data;
+      });
+  }
+  getSelectedStaff() {
+    this.staffS
+      .getSelectedStaff()
+      .pipe(take(1))
+      .subscribe((staff: Staff | null) => {
+        this.selectedStaff = staff;
+      });
+  }
+
+  getAllStaffList() {
+    this.staffS
+      .getAllStaff()
+      .pipe(take(1))
+      .subscribe((staff: Staff[]) => {
+        this.allStaffList = staff;
+        this.allStaffList.map((staff: any, index: number) => {
+          if (this.selectedStaff && staff.id == this.selectedStaff.id) {
+            this.activeStaff = { index, staff };
+          }
+        });
+      });
   }
 
   withoutRoom() {
@@ -52,6 +88,33 @@ export class ViewStaffDetailComponent implements OnInit {
     }
   }
 
+  addStaff() {
+    let isExist: boolean = false;
+    this.selectedStaffList.map((staff: any, index: number) => {
+      if (staff.id == this.activeStaff.staff.id) {
+        this.selectedStaffList.splice(index, 1);
+        this.updateStaffList.emit({ data: this.selectedStaffList });
+        isExist = true;
+      }
+    });
+
+    if (!isExist) {
+      this.selectedStaffList.push(this.activeStaff.staff);
+      this.updateStaffList.emit({ data: this.selectedStaffList });
+    }
+  }
+
+  isSelected() {
+    let ret = false;
+    for (let i = 0; i < this.selectedStaffList.length; i++) {
+      const element = this.selectedStaffList[i];
+
+      if (this.activeStaff.staff.id == element.id) {
+        ret = true;
+      }
+    }
+    return ret;
+  }
   getRooms() {
     this.showFloorPlan = true;
     this.visible = false;
@@ -92,5 +155,13 @@ export class ViewStaffDetailComponent implements OnInit {
         staff: this.allStaffList[index - 1],
       };
     }
+  }
+
+  CloseTrigerFromChild() {
+    this.showFloorPlan = false;
+  }
+
+  redirect(path: string) {
+    this.router.navigateByUrl(path);
   }
 }

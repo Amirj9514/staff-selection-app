@@ -25,8 +25,6 @@ export class HomeComponent implements OnInit {
 
   getBannerDetail() {
     let bannerDetail = this.localStorageData?.banners;
-    console.log(bannerDetail, bannerDetail.length);
-
     if (bannerDetail && bannerDetail.length > 0) {
       console.log(bannerDetail, bannerDetail.length);
       this.bannerList = bannerDetail;
@@ -45,26 +43,6 @@ export class HomeComponent implements OnInit {
         error: (err: any) => {},
       });
     }
-
-    // if (bannerDetail && bannerDetail.lenght > 0) {
-    //   console.log(bannerDetail);
-
-    //   this.bannerList = bannerDetail;
-    // } else {
-    //   let apiParam = { business_id: '76' };
-
-    //   this.sharedS.sendPostRequest('events/get_banners', apiParam).subscribe({
-    //     next: (res: any) => {
-    //       console.log(res);
-    //       if (res.status == 'OK') {
-    //         let banners = res.data?.banners;
-    //         this.bannerList = banners ? banners : [];
-    //         this.sharedS.insertData({ key: 'banners', val: this.bannerList });
-    //       }
-    //     },
-    //     error: (err: any) => {},
-    //   });
-    // }
   }
 
   redirect() {

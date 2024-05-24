@@ -11,6 +11,19 @@
   padding: 5px;
 }
 
+.ContinueArrow{
+   display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  background-color: #e9c33b;
+  border-radius: 50%;
+  color: black;
+  font-size: 30px;
+  padding: 5px;
+}
+
 .selectBtn {
   border: 1px solid #e9c33b;
   padding: 12px 50px;
@@ -18,8 +31,8 @@
   overflow: hidden;
   font-weight: 700;
   text-wrap: nowrap;
-  color: black;
-  background-color: #e9c33b;
+
+
 }
 
 .roomTab {

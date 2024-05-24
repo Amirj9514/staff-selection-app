@@ -1,0 +1,88 @@
+<div class="mx-3 justify-content-between overflow-hidden">
+  <div class="flex gap-3 my-3">
+    <div
+      (click)="goBack()"
+      class="flex align-items-center px-3 py-2 border-round-xl border-1 border-clr"
+    >
+      <div class="backIcon">
+        <svg
+          stroke="currentColor"
+          fill="currentColor"
+          stroke-width="0"
+          viewBox="0 0 512 512"
+          height="1em"
+          width="1em"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="48"
+            d="M328 112 184 256l144 144"
+          ></path>
+        </svg>
+      </div>
+      <div class="ml-3 text-xl font-semibold secondary-txt">Back</div>
+    </div>
+  </div>
+
+  <div
+    class="mb-3 mt-6 grid justify-content-between"
+    style="height: 80vh"
+    *ngIf="!roomLoaderApi"
+  >
+    <div class="col-3 mt-6 relative">
+      <div *ngFor="let room of floorPlan" class="mb-3">
+        <div
+          (click)="selectRoom(room)"
+          [ngClass]="isActive(room) ? 'secondary-bg text-dark' : ''"
+          class="border-1 border-clr text-xl font-semibold text-center mx-3 border-round-xl secondary-txt py-3 clickAnimation"
+        >
+          {{ room?.room_name }}
+        </div>
+      </div>
+
+      <div class="absolute" style="bottom: 30px; left: 10px">
+        <img
+          [src]="localStorageData?.user?.logo"
+          alt="logo"
+          style="object-fit: cover"
+          width="110px"
+        />
+      </div>
+    </div>
+
+    <div class="col-8">
+      <div style="border-radius: 6px" class="bg-light">
+        <img [src]="selectedFloor?.floor_plan" />
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-3 mt-6 grid justify-content-between" *ngIf="roomLoaderApi">
+    <div class="col-3 mt-6">
+      <div class="mb-3">
+        <p-skeleton width="w-full" height="4rem" />
+      </div>
+
+      <div class="mb-3">
+        <p-skeleton width="w-full" height="4rem" />
+      </div>
+
+      <div class="mb-3">
+        <p-skeleton width="w-full" height="4rem" />
+      </div>
+
+      <div class="mb-3">
+        <p-skeleton width="w-full" height="4rem" />
+      </div>
+    </div>
+
+    <div class="col-8">
+      <div style="border-radius: 6px">
+        <p-skeleton width="100%" height="60vh" />
+      </div>
+    </div>
+  </div>
+</div>
