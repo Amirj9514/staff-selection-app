@@ -24,10 +24,19 @@
   color: #ffffff !important;
 }
 
-.bg-light{
+.bg-light {
   background-color: #ffffff;
 }
 
 .text-dark {
   color: black;
+}
+
+
+.border-nt-1 {
+  border-color: $natural1 !important;
+}
+
+.natural-1-txt {
+  color: $natural1;
 }

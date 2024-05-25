@@ -30,7 +30,6 @@ export class ViewStaffDetailComponent implements OnInit {
   visible: boolean = false;
   showFloorPlan: boolean = false;
   floorPlan: any[] = [];
-
   selectedFloor: any;
 
   constructor(
@@ -41,6 +40,7 @@ export class ViewStaffDetailComponent implements OnInit {
   ngOnInit() {
     this.getLocalStorageData();
     this.getSelectedStaff();
+    this.getSelectedStaffList();
     this.getAllStaffList();
   }
   getLocalStorageData() {
@@ -56,7 +56,22 @@ export class ViewStaffDetailComponent implements OnInit {
       .getSelectedStaff()
       .pipe(take(1))
       .subscribe((staff: Staff | null) => {
-        this.selectedStaff = staff;
+        if (staff) {
+          this.selectedStaff = staff;
+        } else {
+          this.redirect('/staffList');
+        }
+      });
+  }
+
+  getSelectedStaffList() {
+    this.staffS
+      .getSelectStaffList()
+      .pipe(take(1))
+      .subscribe((list: Staff[]) => {
+        console.log(list);
+
+        this.selectedStaffList = list;
       });
   }
 
@@ -75,17 +90,10 @@ export class ViewStaffDetailComponent implements OnInit {
   }
 
   withoutRoom() {
-    this.cancelEvent.emit({ isSelected: false, data: null });
-    // this.selectedStaffList.push(this.selectedStaff);
-    // console.log(this.selectedStaffList);
-  }
-
-  goBack(data?: { isSelected: boolean; data: any }) {
-    if (data) {
-      this.cancelEvent.emit(data);
-    } else {
-      this.cancelEvent.emit({ isSelected: false, data: null });
-    }
+    this.staffS.setSelectedStaff(null);
+    this.staffS.updateSelectedStaffList([]);
+    this.staffS.updateStaffList([]);
+    this.redirect('/home');
   }
 
   addStaff() {
@@ -93,15 +101,23 @@ export class ViewStaffDetailComponent implements OnInit {
     this.selectedStaffList.map((staff: any, index: number) => {
       if (staff.id == this.activeStaff.staff.id) {
         this.selectedStaffList.splice(index, 1);
-        this.updateStaffList.emit({ data: this.selectedStaffList });
+        this.staffS.updateSelectedStaffList(this.selectedStaffList);
         isExist = true;
       }
     });
 
     if (!isExist) {
       this.selectedStaffList.push(this.activeStaff.staff);
-      this.updateStaffList.emit({ data: this.selectedStaffList });
+      this.staffS.updateSelectedStaffList(this.selectedStaffList);
     }
+  }
+
+  getRooms() {
+    this.redirect('/staffList/table');
+  }
+
+  AddMoreStaff() {
+    this.redirect('/staffList');
   }
 
   isSelected() {
@@ -114,28 +130,6 @@ export class ViewStaffDetailComponent implements OnInit {
       }
     }
     return ret;
-  }
-  getRooms() {
-    this.showFloorPlan = true;
-    this.visible = false;
-    this.sharedS
-      .sendPostRequest('menu/get_business_rooms', { business_id: 76 })
-      .subscribe({
-        next: (res: any) => {
-          console.log(res);
-          if (res.success) {
-            this.floorPlan = res.rooms;
-            if (this.floorPlan && this.floorPlan.length > 0) {
-              this.selectedFloor = this.floorPlan[0];
-            }
-          }
-        },
-        error: (err: any) => {},
-      });
-  }
-
-  selectedRoom(floor: any) {
-    this.selectedFloor = floor;
   }
 
   next(index: number) {
@@ -155,10 +149,6 @@ export class ViewStaffDetailComponent implements OnInit {
         staff: this.allStaffList[index - 1],
       };
     }
-  }
-
-  CloseTrigerFromChild() {
-    this.showFloorPlan = false;
   }
 
   redirect(path: string) {

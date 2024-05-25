@@ -41,6 +41,7 @@
 *::-webkit-scrollbar-thumb:hover {
   background: rgb(200, 200, 200);
 }
+
 .ripple {
   position: absolute;
   border-radius: 50%;
@@ -76,5 +77,21 @@
 
   .p-dropdown-trigger {
     color: #ffffff;
+  }
+}
+
+
+#customerDropdown {
+  .p-dropdown {
+    background-color: transparent;
+    border: none;
+
+    .p-dropdown-label {
+      color: $secondary;
+    }
+
+    .p-icon-wrapper {
+      color: $secondary;
+    }
   }
 }

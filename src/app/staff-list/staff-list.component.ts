@@ -10,6 +10,7 @@ import {
 } from '../shared/interfaces/staffFilter.interface';
 import { StaffModuleService } from '../shared/services/staff-module.service';
 import { Router } from '@angular/router';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-staff-list',
@@ -45,7 +46,17 @@ export class StaffListComponent implements OnInit {
 
   ngOnInit() {
     this.getLocalStorageData();
+    this.getSelectedSaffList();
     this.getStafList();
+  }
+
+  getSelectedSaffList() {
+    this.staffS
+      .getSelectStaffList()
+      .pipe(take(1))
+      .subscribe((staffList: Staff[]) => {
+        this.selectedStaffList = staffList;
+      });
   }
 
   getLocalStorageData() {
@@ -161,9 +172,26 @@ export class StaffListComponent implements OnInit {
   }
 
   addStaffList(data: Staff) {
-    this.staffS.setSelectedStaff(data);
-    this.staffS.updateStaffList(this.filterStafList);
-    this.router.navigateByUrl('/staffList/viewStaff');
+    if (this.selectedStaffList && this.selectedStaffList.length > 0) {
+      let isExist: boolean = false;
+      for (let i = 0; i < this.selectedStaffList.length; i++) {
+        const element = this.selectedStaffList[i];
+        if (element.id == data.id) {
+          isExist = true;
+          this.selectedStaffList.splice(i, 1);
+        }
+      }
+
+      if (!isExist) {
+        this.staffS.setSelectedStaff(data);
+        this.staffS.updateStaffList(this.filterStafList);
+        this.router.navigateByUrl('/staffList/viewStaff');
+      }
+    } else {
+      this.staffS.setSelectedStaff(data);
+      this.staffS.updateStaffList(this.filterStafList);
+      this.router.navigateByUrl('/staffList/viewStaff');
+    }
   }
 
   hideShowStaffDetail(data: Staff | null, show: boolean) {
@@ -178,21 +206,6 @@ export class StaffListComponent implements OnInit {
         data,
         show,
       };
-    }
-  }
-
-  closrTrigerFromChild(event: { isSelected: boolean; data: Staff }) {
-    if (event && event.isSelected && event.data) {
-      this.selectedStaffList.push(event.data);
-    } else {
-      // this.selectedStaffList = [];
-    }
-    this.hideShowStaffDetail(null, false);
-  }
-
-  upadteTrigerFromChild(event: { data: Staff[] }) {
-    if (event && event.data) {
-      this.selectedStaffList = event.data;
     }
   }
 

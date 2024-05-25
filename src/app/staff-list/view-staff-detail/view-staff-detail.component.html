@@ -142,12 +142,12 @@
   </div>
 </div>
 <!-- -->
-<div *ngIf="showFloorPlan">
+<!-- <div *ngIf="showFloorPlan">
   <app-select-room
     [localStorageData]="localStorageData"
     (cancelEvent)="CloseTrigerFromChild()"
   ></app-select-room>
-</div>
+</div> -->
 
 <!-- Pop Up -->
 <p-dialog
@@ -203,9 +203,8 @@
         Select Room
       </div>
     </div>
-    <div class="col-6 h-full">
+    <div class="col-6 h-full" (click)="AddMoreStaff()">
       <div
-        (click)="goBack({ isSelected: true, data: activeStaff.staff })"
         class="py-3 h-full px-2 text-center border-1 border-clr border-round-3xl text-2xl font-semibold secondary-txt"
       >
         Add Additional Staff for Room

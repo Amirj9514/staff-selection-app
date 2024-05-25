@@ -13,6 +13,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { RippleModule } from 'primeng/ripple';
 import { DialogModule } from 'primeng/dialog';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
 
 import { FloatLabelModule } from 'primeng/floatlabel';
 @NgModule({
@@ -31,6 +33,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     RippleModule,
     DialogModule,
     FloatLabelModule,
+    IconFieldModule,
+    InputIconModule,
     // -------------------------------------------
     // Not Shared Modules
   ],
@@ -48,6 +52,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
     RippleModule,
     FloatLabelModule,
     DialogModule,
+    IconFieldModule,
+    InputIconModule,
   ],
   providers: [MessageService],
 })

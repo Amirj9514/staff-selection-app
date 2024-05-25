@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { take } from 'rxjs';
 import { SharedService } from 'src/app/shared/services/shared.service';
 
 @Component({
@@ -7,7 +8,7 @@ import { SharedService } from 'src/app/shared/services/shared.service';
   styleUrls: ['./select-room.component.scss'],
 })
 export class SelectRoomComponent implements OnInit {
-  @Input() localStorageData: any;
+  localStorageData: any;
   @Output() cancelEvent = new EventEmitter<boolean>();
   floorPlan: any[] = [];
   selectedFloor: any;
@@ -15,7 +16,17 @@ export class SelectRoomComponent implements OnInit {
   constructor(private sharedS: SharedService) {}
 
   ngOnInit() {
+    this.getLocalStorageData();
     this.getRooms();
+  }
+
+  getLocalStorageData() {
+    this.sharedS
+      .getData()
+      .pipe(take(1))
+      .subscribe((data: any) => {
+        this.localStorageData = data;
+      });
   }
   getRooms() {
     this.roomLoaderApi = true;
@@ -48,7 +59,6 @@ export class SelectRoomComponent implements OnInit {
     if (floor.id == this.selectedFloor.id) {
       ret = true;
     }
-
     return ret;
   }
   goBack() {
