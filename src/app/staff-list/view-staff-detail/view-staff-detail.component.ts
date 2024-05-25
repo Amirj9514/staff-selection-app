@@ -90,10 +90,11 @@ export class ViewStaffDetailComponent implements OnInit {
   }
 
   withoutRoom() {
-    this.staffS.setSelectedStaff(null);
-    this.staffS.updateSelectedStaffList([]);
-    this.staffS.updateStaffList([]);
-    this.redirect('/home');
+    this.redirect('staffList/customer');
+    // this.staffS.setSelectedStaff(null);
+    // this.staffS.updateSelectedStaffList([]);
+    // this.staffS.updateStaffList([]);
+    // this.redirect('/home');
   }
 
   addStaff() {

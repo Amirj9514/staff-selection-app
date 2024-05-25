@@ -17,7 +17,7 @@
   </div>
 
 
-  <form [formGroup]="customerSearchForm" class="flex w-full  my-6">
+  <form [formGroup]="customerSearchForm" (ngSubmit)="onSubmit(customerSearchForm)" class="flex w-full  my-6">
 
     <div class="flex w-full flex-column">
       <div class="ml-2 mb-1 natural-1-txt">Search by</div>
@@ -30,20 +30,25 @@
                   +1
                 </div>
               </p-inputIcon>
-              <input [type]="inputType(customerSearchForm)" class="w-full border-none bg-transparent" pInputText />
+              <input [type]="inputType(customerSearchForm)" formControlName="phoneNum"
+                class="w-full border-none bg-transparent" pInputText />
             </p-iconField>
-            <input [type]="inputType(customerSearchForm)" *ngIf="customerSearchForm.value.searchBy.id != 1"
-              class="w-full border-none bg-transparent" pInputText />
+            <input type="email" placeholder="Enter email" *ngIf="customerSearchForm.value.searchBy.id == 2"
+              class="w-full border-none bg-transparent" formControlName="email" pInputText />
+
+            <input type="text" placeholder="Enter Name" *ngIf="customerSearchForm.value.searchBy.id == 3"
+              class="w-full border-none bg-transparent" formControlName="name" pInputText />
           </div>
           <div>
-            <p-dropdown id="customerDropdown" [options]="searchByList" formControlName="searchBy" optionLabel="name" />
+            <p-dropdown id="customerDropdown" [options]="searchByList"
+              (onChange)="addRemoveVaidation(customerSearchForm)" formControlName="searchBy" optionLabel="name" />
           </div>
         </div>
         <button pButton class="secondary-bg text-dark flex justify-content-center border-round-lg w-7rem">
           Search
         </button>
 
-        <button pButton
+        <button pButton (click)="reset()"
           class="bg-transparent border-1 border-clr secondary-txt px-4 border-round-lg w-7rem flex justify-content-center">
           <div class="backIcon2">
             <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 512 512" height="1em"
@@ -59,24 +64,49 @@
     </div>
   </form>
   <div class="staffListCards grid my-4 justify-content-center">
-    <div class="col-9">
-      <div class="grid">
-        <div class="col-6 sm:col-4 md:col-3" *ngFor="let staff of list">
-          <div class="safttCard cursor-pointer">
-            <div class="cardHeader overflow-hidden relative">
-
-              <img width="100%" height="100%" src="../../../assets/icon/imag.jpg" />
+    <div class="col-9 mb-6">
+      <div class="grid h-full overflow-auto" *ngIf="!formSumitLoader">
+        <div class="col-6 sm:col-4 md:col-4" *ngFor="let customer of customerList">
+          <div class="safttCard p-3 border-round-xl cursor-pointer">
+            <div class="my-3">
+              <div class="natural-1-txt text-sm mb-1">Customer Name</div>
+              <div class="secondary-txt text-md">{{customer?.first_name + " " +customer?.last_name}}</div>
             </div>
-            <div class="cardBody secondary-txt text-xl font-semibold">
-              <div>Customer {{ staff }}</div>
+
+            <div class="my-3">
+              <div class="natural-1-txt text-sm mb-1">Email</div>
+              <div class="secondary-txt text-md">{{customer.email}}</div>
+            </div>
+
+            <div class="my-3">
+              <div class="natural-1-txt text-sm mb-1">Phone Number</div>
+              <div class="secondary-txt text-md">{{customer?.phone}}</div>
+            </div>
+
+
+            <div class="mt-5 mb-3 flex w-full justify-content-center">
+              <button pButton (click)="selectCustomer(customer)"
+                class="py-3 bg-transparent secondary-txt w-10 flex justify-content-center border-1 border-clr border-round-lg">
+                Select
+              </button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="grid h-full" *ngIf="formSumitLoader">
+        <div class="col-6 sm:col-4 md:col-4" *ngFor="let customer of list">
+
+          <p-skeleton width="w-full" height="18.625rem" />
+          <!-- <div class=" p-3 border-round-xl" style="height: 298px;">
+            <div style="visibility: hidden;"></div>
+          </div> -->
         </div>
       </div>
     </div>
   </div>
 
   <div class="absolute" style="bottom: 30px; left: 16px">
-    <img [src]="localStorageData?.user?.logo" alt="logo" style="object-fit: cover" width="110px" />
+    <img [src]="localStorageData?.businessData?.logo" alt="logo" style="object-fit: cover" width="110px" />
   </div>
 </div>

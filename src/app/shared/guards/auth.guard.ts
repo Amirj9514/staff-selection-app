@@ -13,7 +13,7 @@ export const authGuard: CanActivateFn = (route, state) => {
     .getData()
     .pipe(take(1))
     .subscribe((val: any) => {
-      user = val?.user?.id;
+      user = val?.businessData?.id;
       if (!user || user.length < 1) {
         result = false;
       } else {
@@ -24,7 +24,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   console.log(result, user);
 
   if (!result) {
-    sharedS.insertData({ key: 'user', val: null });
+    sharedS.insertData({ key: 'businessData', val: null });
     router.navigateByUrl('/');
   }
   return result;

@@ -15,8 +15,9 @@ export class StaffModuleService {
 
   // ----------------------------------------------
   //   Selected Staff Methods Start
-  setSelectedStaff(data: Staff|null): void {
+  setSelectedStaff(data: Staff | null): void {
     this.selectedStaff.next(data);
+    console.log(data);
   }
 
   getSelectedStaff(): Observable<Staff | null> {

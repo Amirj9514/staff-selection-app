@@ -133,7 +133,7 @@ export class LoginComponent implements OnInit {
         next: (res: any) => {
           this.loginLoader = false;
           if (res.status && (res.status == 'true' || res.status == true)) {
-            this.sharedS.insertData({ key: 'user', val: res });
+            this.sharedS.insertData({ key: 'businessData', val: res });
             this.router.navigateByUrl('/home');
           } else {
             this.showToastS.setToast({

@@ -25,15 +25,21 @@
       <div class="grid">
         <div class="col-6">
           <div class="w-full">
-            <label class="mb-1">Phone Number</label>
+            <label class="mb-2 text-sm">Phone Number</label>
             <div>
               <p-iconField iconPosition="left"> <p-inputIcon>
                   <div class="">
                     +1
                   </div>
                 </p-inputIcon>
-                <input type="text" class="w-full bg-transparent" pInputText />
+                <input type="text" class="w-full bg-transparent" formControlName="phoneNum" pInputText />
               </p-iconField>
+              <small *ngIf="customerSearchForm.get('phoneNum')?.touched || formSubmit" class="text-red-600">
+                <div *ngIf="customerSearchForm.get('phoneNum')?.hasError('required')">
+                  Phone number is required.
+                </div>
+
+              </small>
             </div>
 
           </div>
@@ -41,10 +47,15 @@
 
         <div class="col-6">
           <div class="w-full">
-            <label class="mb-1">First Name</label>
+            <label class="mb-2 text-sm">First Name</label>
 
-            <input type="text" class="w-full bg-transparent" pInputText />
+            <input type="text" class="w-full bg-transparent" formControlName="firstName" pInputText />
+            <small *ngIf="customerSearchForm.get('firstName')?.touched || formSubmit" class="text-red-600">
+              <div *ngIf="customerSearchForm.get('firstName')?.hasError('required')">
+                First Name is required.
+              </div>
 
+            </small>
           </div>
 
         </div>
@@ -52,18 +63,31 @@
         <div class="col-6">
           <div class="w-full">
 
-            <label class="mb-1">Last Name</label>
+            <label class="mb-2 text-sm">Last Name</label>
 
-            <input type="text" class="w-full bg-transparent" pInputText />
+            <input type="text" class="w-full bg-transparent" formControlName="lastName" pInputText />
+            <small *ngIf="customerSearchForm.get('lastName')?.touched || formSubmit" class="text-red-600">
+              <div *ngIf="customerSearchForm.get('lastName')?.hasError('required')">
+                Last Name is required.
+              </div>
 
+            </small>
           </div>
 
         </div>
 
         <div class="col-6">
           <div class="w-full">
-            <label class="mb-1">Email</label>
-            <input type="email" class="w-full bg-transparent" pInputText />
+            <label class="mb-2 text-sm">Email</label>
+            <input type="email" class="w-full bg-transparent" formControlName="email" pInputText />
+            <small *ngIf="customerSearchForm.get('email')?.touched || formSubmit" class="text-red-600">
+              <div *ngIf="customerSearchForm.get('email')?.hasError('required')">
+                Email is required.
+              </div>
+              <div *ngIf="customerSearchForm.get('email')?.hasError('email')">
+                Invalid email format.
+              </div>
+            </small>
           </div>
         </div>
       </div>
@@ -78,6 +102,6 @@
   </form>
 
   <div class="absolute" style="bottom: 30px; left: 16px">
-    <img [src]="localStorageData?.user?.logo" alt="logo" style="object-fit: cover" width="110px" />
+    <img [src]="localStorageData?.businessData?.logo" alt="logo" style="object-fit: cover" width="110px" />
   </div>
 </div>
